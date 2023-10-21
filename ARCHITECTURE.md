@@ -197,3 +197,5 @@ _Connections_ correspond to _Sessions_ in SQL standard terminology. A client 
 </p>
 
 **_Clients_** A MySQL Client is a command line tool or an application that talks to the MySQL Server  over the MySQL Client-Server protocol.
+
+**_Connection Requests_** The MySQL Clients send _connection requests_ to the MySQL Server. A connection request is simply a TCP-IP connect message sent to port 3306 on the server host machine.
