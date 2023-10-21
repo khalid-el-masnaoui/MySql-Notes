@@ -187,3 +187,13 @@ Undo logs that reside in the global temporary tablespace are used for transactio
 The MySQL Server (mysqld) executes as a single OS _process_, with multiple _threads_ executing concurrent activities. MySQL does not have its own thread implementation, but relies on the thread implementation of the underlying OS. When a user _connects_ to the database a _user thread_ is created inside mysqld and this user thread executes user queries,  sending results back to the user, until the user _disconnects_.
 
 When more and more users connect to the database, more and more user threads execute in parallel. As long as all user threads execute as if they are alone we can say that the system (MySQL) scales well. But at some point we reach a limit and adding more user threads will not be useful or efficient.
+
+#### Connection
+
+_Connections_ correspond to _Sessions_ in SQL standard terminology. A client connects to the MySQL Server and stays connected until it does a disconnect.
+
+<p align="center">
+<img src="./images/mysql_connection.png"/>
+</p>
+
+**_Clients_** A MySQL Client is a command line tool or an application that talks to the MySQL Server  over the MySQL Client-Server protocol.
