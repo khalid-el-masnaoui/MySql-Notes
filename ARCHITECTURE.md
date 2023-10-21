@@ -201,3 +201,5 @@ _Connections_ correspond to _Sessions_ in SQL standard terminology. A client 
 **_Connection Requests_** The MySQL Clients send _connection requests_ to the MySQL Server. A connection request is simply a TCP-IP connect message sent to port 3306 on the server host machine.
 
 **_Receiver Thread_** Incoming connection requests are queued and then processed by the _receiver thread_ one by one. The only job of the receiver thread is to create a _user thread_, further processing is done by the user thread.
+
+**_Thread Cache_** The receiver thread will either create a new OS thread or reuse an existing “free” OS thread if found in the thread cache. The thread cache used to be important for connect speed when OS threads were costly to create. Nowadays creating an OS thread is relatively cheap and the thread cache can perhaps be said to be legacy. The `thread_cache_size` default value is calculated as `8 + (max_connections / 100)` and is rarely changed. It might make sense to try increasing the thread cache in cases where number of connections fluctuates between having very few connections and having many connections.
