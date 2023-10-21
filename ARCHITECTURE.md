@@ -207,3 +207,12 @@ _Connections_ correspond to _Sessions_ in SQL standard terminology. A client 
 **_User Thread._** :  It is the user thread that handles the client-server protoco(e.g. sends back the initial handshake packet). This _user thread_ will allocate and initialize the corresponding `THD`, and then continue with capability negotiation and authentication. In this process the user credentials are stored in the THD’s _security context_. If everything goes well in the **connection phase**, the user thread will enter the **command phase**.
 
 **_THD_** :  The connection is represented by a data structure called the THD which is created when the connection is established and deleted when the connection is dropped. There is always a `one-to-one` correspondence between a user connection and a THD, i.e. THDs are not reused across connections. The size of the THD is ~10K. The THD is a large data structure which is used to keep track of various aspects of execution state. Memory rooted in the THD will grow significantly during query execution, but exactly how much it grows will depend upon the query.  For memory planning purposes we recommend to plan for ~10MB per connection on average.
+
+#### Disconnection
+
+When a MySQL Client disconnects from a MySQL Server. The Client sends a  `COM_QUIT` command which causes the server to close the socket. A disconnect can also happen when either side closes its end of the socket. Upon a disconnect the user thread will clean up, deallocate the THD, and finally put itself in the Thread Cache as “suspended” if there are free slots. If there are no free slots, the user thread will be “terminated”.
+
+
+<p align="center">
+<img src="./images/mysql_disconnection.png"/>
+</p>
