@@ -59,3 +59,15 @@ InnoDB is MySQL’s default transactional storage engine, as well as the most im
 <p align="center">
 <img src="./images/innodb_architecture.png"/>
 </p>
+
+#### InnoDB In-Memory Structures
+
+###### Buffer Pool
+
+The buffer pool is an area in main memory where `InnoDB` caches table and index data as it is accessed. The buffer pool permits frequently used data to be accessed directly from memory, which speeds up processing. On dedicated servers, up to 80% of physical memory is often assigned to the buffer pool.
+
+For efficiency of high-volume read operations, the buffer pool is divided into pages that can potentially hold multiple rows. For efficiency of cache management, the buffer pool is implemented as a linked list of pages; data that is rarely used is aged out of the cache using a variation of the least recently used (LRU) algorithm.
+
+By default, pages read by queries are immediately moved into the new sublist, meaning they stay in the buffer pool longer.
+
+Knowing how to take advantage of the buffer pool to keep frequently accessed data in memory is an important aspect of MySQL tuning.
