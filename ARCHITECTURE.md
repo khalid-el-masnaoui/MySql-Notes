@@ -1,6 +1,6 @@
 # MySql Architecture
 
-Notes about MySql , MySql architecture, ACID, connection handling  and other MySql related concepts.
+In-depth Notes about MySql , MySql architecture, ACID, connection and thread handling  and other MySql related concepts.
 
 ## MySQL Architecture
 
@@ -21,5 +21,16 @@ To get the most from MySQL, you need to understand its design so that you can wo
 <img src="./images/mysql_architecture.png"/>
 </p>
 
+#### Client
+
+The Client sends request instructions to the Server. The client submits a request using valid MYSQL commands and expressions via Command Prompt or GUI screen. The output is shown on the screen if the expressions and commands are true. The following are some of the most relevant client layer services:
+
+- **Connection Handling**- When a client sends a request to the server, the server accepts it and connects the client. When a client connects to the server at that time, the connection is given its own thread. All client-side queries are run with the aid of this thread.
+- **Authentication**- When a client connects to an MYSQL account, authentication takes place on the server-side. The username, originating host, and password are used for authentication.
+- **Security**- When a client connects successfully to MySQL server after authentication, the server verifies that the client has the permissions to run those queries against the MySQL server.
+
+Each client connection gets its own thread within the server process. The connection's queries execute within that single thread, which in turn resides on one core or CPU. The server caches threads, so they don't need to be created and destroyed for each new connection.
+
+When clients (applications) connect to the MySQL server, the server needs to authenticate them. Authentication is based on username, originating host, and password. Certificates can also be used across an Secure Sockets Layer (SSL) connection. Once a client has connected, the server verifies whether the client has privileges for each query it issues.
 
 
