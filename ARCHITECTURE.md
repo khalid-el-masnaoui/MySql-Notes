@@ -1,6 +1,6 @@
 # MySql Architecture
 
-In-depth Notes about MySql , MySql/InnoDB architecture, ACID, connection and thread handling  and other MySql related concepts.
+In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID, connection and thread handling  and other MySql related concepts.
 
 ## MySQL Architecture
 
@@ -216,3 +216,11 @@ When a MySQL Client disconnects from a MySQL Server. The Client sends a  `COM_
 <p align="center">
 <img src="./images/mysql_disconnection.png"/>
 </p>
+
+####  Thread Concurrency
+
+A thread will happily execute instructions until it needs to wait for something or until it has used its timeshare as decided by the OS scheduler. There are three things a thread might need to wait for:  A _mutex_, a _database lock_, or _IO_ (will read more about that in the _concurrency control_ section).
+
+What happens when a thread is suspended by the OS? First, it is not progressing anymore. Second, it might hold mutexes or locks which prevent other threads from progressing. Third, when it is woken up again, cached items might have been evicted requiring data to be re-read. At some point more threads will just cause queues of waiting threads to grow and the system will be soon be jammed. The solution is to limit the number of user threads by limiting `max_connections`,
+
+## MySql Concurrency Control
