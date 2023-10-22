@@ -52,6 +52,9 @@ The MYSQL database contains a different kind of storage engines which exist as a
 
 **Note** :  MySQL’s default transactional storage engine and mostly used one is **InnoDB**, we will dicuss it in more details in the next section.
 
+<p align="center">
+<img src="./images/query_execution_path.png"/>
+</p>
 
 #### The MySQL Client/Server Protocol
 
