@@ -1,6 +1,6 @@
 # MySql Architecture
 
-In-depth Notes about MySql , MySql architecture, ACID, connection and thread handling  and other MySql related concepts.
+In-depth Notes about MySql , MySql/InnoDB architecture, ACID, connection and thread handling  and other MySql related concepts.
 
 ## MySQL Architecture
 
@@ -50,7 +50,9 @@ The “Brain of MYSQL Architecture” is another name for this layer of the MYSQ
 
 The MYSQL database contains a different kind of storage engines which exist as a result of varying needs of databases. The storage engines are used to hold every user-created table in the database system. The **storage-end** facilitates the storing and retrieving of MYSQL data. The storage engine has an API that aids in the execution of the queries from the client end of the architecture just by passing rows back and forth in it.
 
-###### InnoDB Storage Engine
+**Note** :  MySQL’s default transactional storage engine and mostly used one is **InnoDB**, we will dicuss it in more details in the next section.
+
+## InnoDB Storage Engine Architecture
 
 InnoDB is MySQL’s default transactional storage engine, as well as the most important and widely used. It was created to handle a large number of short-lived transactions that are normally completed rather than rolled back. It’s also common for non-transactional storage because of its performance and automatic crash recovery. Unless you have a good reason to use a different engine, you can use InnoDB for your tables.
 
