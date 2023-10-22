@@ -17,3 +17,9 @@ The second layer is where things get interesting. Much of MySQL's brains are he
 The third layer contains the storage engines. They are responsible for storing and retrieving all data stored "in" MySQL. The server communicates with them through the _storage engine API_. The API contains a couple of dozen low-level functions that perform operations such as "begin a transaction" or "fetch the row that has this primary key." The storage engines don't parse SQL or communicate with each other; they simply respond to requests from the server.
 
 
+<p align="center">
+<img src="./images/mysql_architecture.png"/>
+</p>
+
+
+
