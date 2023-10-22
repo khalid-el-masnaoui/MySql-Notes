@@ -231,4 +231,17 @@ The InnoDB process is running and accept threads to execute them .While they  ar
 <img src="./images/innodb_thread_concurrency.jpg"/>
 </p>
 
+- **Innodb_thread_concurrency** is the maximum number of threads permitted within InnoDB at the same time. If the maximum is reached, threads wait in a queue until a slot is available. In image above, the maximum number of threads allowed to be in InnoDB at one time is 5. The rest of the threads have to wait for a slot to become available.
+
+>The default for innodb_thread_concurrency is 0, which means no limit. With the default setting, InnoDB will take and process threads as they come (no waiting in a queue). If the CPU or IO subsystem reaches a point of saturation, performance will start to suffer.
+
+>Giving innodb_thread_concurrency a value greater than 0 turns on InnoDB’s concurrency control mechanism (`MVCC`). It is InnoDB’s internal mechanism that manages and controls threads being executed simultaneously.
+
+
+**Innodb_thread_sleep_delay** is the time, in microseconds, a thread will wait before it enters the InnoDB for processing and is only recognized when the innodb_thread_concurrency value is greater than 0. Moreover, the thread will wait for this amount of time even if there is a slot available. It acts as a way to control the workload. If there is no slot available, the threads in the queue follow a FIFO waiting system demonstrated in Figure above. The first thread in line is the first thread to enter InnoDB when the next slot is available and after it waits 1000ms.
+
+**Innodb_concurrency_tickets** is the maximum number of tickets given when a thread enters InnoDB for processing. One ticket will allow a query to perform one row operation. If the query runs out of tickets, it is expelled out of InnoDB and goes back into the waiting queue. In Figure above, innodb_thread_tickets is set to default (5000 tickets). Three threads will be expelled from InnoDB, the ones with 5001, 10000, and 20000 tickets. However, they will each process 5000 tickets before they leave a spot available for the next thread in the queue. Since one of the threads only has 100 tickets, that thread along with the next 2 threads in the queue will be completed before them.
+
+>Now, will the thread with 100 tickets and the next 2 in the queue be completed before the thread with 500 tickets? Maybe! If you add all the tickets together, it is 300 tickets compared to 500 tickets but 2 threads have to wait for the sleep delay. It will be a pretty close call.
+
 ## MySql Concurrency Control
