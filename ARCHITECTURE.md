@@ -88,6 +88,12 @@ This result means that the optimizer estimated it would need to do about 10 rand
 
 **Note** : **The optimizer might not always choose the best plan, for many reasons** such us  wrong statistics,  cost metric is not really the cost of running the query ...
 
+###### The execution plan
+
+MySQL doesn’t generate byte-code to execute a query, as many other database products do. Instead, the query execution plan is actually a tree of instructions that the query execution engine follows to produce the query results.
+
+**Note** :  The final plan contains enough information to reconstruct the original query.  If you execute `EXPLAIN EXTENDED(query)` on a query, followed by `SHOW WARNINGS`, you’ll see the reconstructed query (The server generates the output from the execution plan. It thus has the same semantics as the original query, but not necessarily the same text).
+
 ## InnoDB Storage Engine Architecture
 
 InnoDB is MySQL’s default transactional storage engine, as well as the most important and widely used. It was created to handle a large number of short-lived transactions that are normally completed rather than rolled back. It’s also common for non-transactional storage because of its performance and automatic crash recovery. Unless you have a good reason to use a different engine, you can use InnoDB for your tables.
