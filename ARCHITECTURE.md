@@ -46,3 +46,14 @@ The “Brain of MYSQL Architecture” is another name for this layer of the MYSQ
 - **Key Cache**- An index entry that uniquely identifies an object in a cache is known as a key cache.
 
 
+#### Storage
+
+The MYSQL database contains a different kind of storage engines which exist as a result of varying needs of databases. The storage engines are used to hold every user-created table in the database system. The **storage-end** facilitates the storing and retrieving of MYSQL data. The storage engine has an API that aids in the execution of the queries from the client end of the architecture just by passing rows back and forth in it.
+
+###### InnoDB Storage Engine
+
+InnoDB is MySQL’s default transactional storage engine, as well as the most important and widely used. It was created to handle a large number of short-lived transactions that are normally completed rather than rolled back. It’s also common for non-transactional storage because of its performance and automatic crash recovery. Unless you have a good reason to use a different engine, you can use InnoDB for your tables.
+
+<p align="center">
+<img src="./images/innodb_architecture.png"/>
+</p>
