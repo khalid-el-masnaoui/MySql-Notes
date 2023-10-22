@@ -70,4 +70,11 @@ For efficiency of high-volume read operations, the buffer pool is divided into p
 
 By default, pages read by queries are immediately moved into the new sublist, meaning they stay in the buffer pool longer.
 
-Knowing how to take advantage of the buffer pool to keep frequently accessed data in memory is an important aspect of MySQL tuning.
+Knowing how to take advantage of the buffer pool to keep frequently accessed data in memory is an important aspect of MySQL tuning
+
+
+###### Change Buffer
+
+The change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from `INSERT`, `UPDATE`, or `DELETE` operations , are merged later when the pages are loaded into the buffer pool by other read operations.
+
+In memory, the change buffer occupies part of the buffer pool. On disk, the change buffer is part of the system tablespace, where index changes are buffered when the database server is shut down.
