@@ -221,6 +221,14 @@ When a MySQL Client disconnects from a MySQL Server. The Client sends a  `COM_
 
 A thread will happily execute instructions until it needs to wait for something or until it has used its timeshare as decided by the OS scheduler. There are three things a thread might need to wait for:  A _mutex_, a _database lock_, or _IO_ (will read more about that in the _concurrency control_ section).
 
-What happens when a thread is suspended by the OS? First, it is not progressing anymore. Second, it might hold mutexes or locks which prevent other threads from progressing. Third, when it is woken up again, cached items might have been evicted requiring data to be re-read. At some point more threads will just cause queues of waiting threads to grow and the system will be soon be jammed. The solution is to limit the number of user threads by limiting `max_connections`,
+What happens when a thread is suspended by the OS? First, it is not progressing anymore. Second, it might hold mutexes or locks which prevent other threads from progressing. Third, when it is woken up again, cached items might have been evicted requiring data to be re-read. At some point more threads will just cause queues of waiting threads to grow and the system will be soon be jammed. The solution is to limit the number of user threads by limiting `max_connections`
+
+###### the thread concurrency process
+
+The InnoDB process is running and accept threads to execute them .While they  are threads that are in queue to enter the InnoDB process,
+
+<p align="center">
+<img src="./images/innodb_thread_concurrency.jpg"/>
+</p>
 
 ## MySql Concurrency Control
