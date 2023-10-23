@@ -269,4 +269,20 @@ Systems that deal with concurrent read/write access typically implement a lockin
 
 Locks consume resources, one way to improve the concurrency of a shared resource is to be more selective about what you lock. Rather than locking the entire resource, lock only the part that contains the data you need to change. Better yet, lock only the exact piece of data you plan to change. Minimizing the amount of data that you lock at any one time lets changes to a given resource occur simultaneously, as long as they don't conflict with each other.
 
-- **Table locks** : Table-level locking systems always lock entire tables. For instance, the server uses a table-level lock for statements such as `ALTER TABLE`
+- **Table locks** : Table-level locking systems always lock entire tables. For instance, the server uses a table-level lock for statements such as `ALTER TABLE`. 
+>
+```sql
+#lock tables
+LOCK TABLES table_name [AS alias_name] READ/WRITE;
+# example
+LOCK TABLES malidkha READ;
+
+# unlock tables
+UNLOCK TABLES;
+```
+
+-  **Row locks** :  Row-level locks serve a primary function to prevent multiple transactions from modifying the same row. Whenever a transaction needs to modify a row, a row lock is acquired
+	- **Single-row locks** :  A statement can lock only _a single row_ at a time.
+	- **Range locks** :A statement can lock _a range of rows_
+
+**Note** : Row-level locking systems can lock entire tables if the WHERE clause of a statement cannot use an index
