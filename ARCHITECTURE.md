@@ -257,3 +257,16 @@ Anytime more than one query needs to change data at the same time, the problem o
 Concurrent accessing of data is comparatively easy when all users are only reading data, as there is no means that they can interfere with one another. However, when multiple users are accessing the database at the same time, and at least one is updating data, there may be the case of interference, which can result in data inconsistencies.
 
 They are many Concurrency Control techniques MySql employs such : Read-Writes locks , Isolation Level (`REPEATABLE READ`), MVCC 
+
+#### Read/Write Locks
+
+Systems that deal with concurrent read/write access typically implement a locking system that consists of two lock types. These locks are usually known as _shared locks_ and _exclusive locks_, or _read locks_ and _write locks_.
+
+**Read locks**  on a resource are shared, or mutually nonblocking: many clients may read from a resource at the same time and not interfere with each other (blocking writes) 
+**Write locks** on the other hand, are exclusive—i.e., they block both read locks and other write locks
+
+###### Lock Granularity and Management
+
+Locks consume resources, one way to improve the concurrency of a shared resource is to be more selective about what you lock. Rather than locking the entire resource, lock only the part that contains the data you need to change. Better yet, lock only the exact piece of data you plan to change. Minimizing the amount of data that you lock at any one time lets changes to a given resource occur simultaneously, as long as they don't conflict with each other.
+
+- **Table locks** : Table-level locking systems always lock entire tables. For instance, the server uses a table-level lock for statements such as `ALTER TABLE`
