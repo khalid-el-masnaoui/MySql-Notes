@@ -394,3 +394,13 @@ You can think of MVCC as a twist on row-level locking; it avoids the need for l
 > MVCC works by keeping a snapshot of the data as it existed at some point in time. This means transactions can see a consistent view of the data, no matter how long they run. It also means different transactions can see different data in the same tables at the same time!
 
 > InnoDB implements MVCC by storing with each row two additional, hidden values that record when the row was created and when it was expired (or deleted). Rather than storing the actual times at which these events occurred, the row stores the system version number at the time each event occurred. This is a number that increments each time a transaction begins. Each transaction keeps its own record of the current system version, as of the time it began. Each query has to check each row's version numbers against the transaction's version
+
+Let's see how this applies to particular operations when the transaction isolation level is set to `REPEATABLE READ`:
+
+`SELECT`
+
+> 	InnoDB must examine each row to ensure that it meets two criteria:
+> 	- InnoDB must find a version of the row that is at least as old as the transaction (i.e., its version must be less than or equal to the transaction's version). This ensures that either the row existed before the transaction began, or the transaction created or altered the row.
+> 	- The row's deletion version must be undefined or greater than the transaction's version. This ensures that the row wasn't deleted before the transaction began.
+> 	-  Rows that pass both tests may be returned as the query's result.
+
