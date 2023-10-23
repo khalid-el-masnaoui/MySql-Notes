@@ -353,3 +353,28 @@ The SQL standard defines four isolation levels, with specific rules for which c
 **_SERIALIZABLE_**
 
 >	The highest level of isolation, `SERIALIZABLE`, solves the phantom read problem by forcing transactions to be ordered so that they can't possibly conflict. In a nutshell, `SERIALIZABLE` places a lock on every row it reads. At this level, a lot of timeouts and lock contention may occur. We've rarely seen people use this isolation level, but your application's needs may force you to accept the decreased concurrency in favor of the data stability that results.
+
+
+###### Deadlocks
+
+A _deadlock_ is when two or more transactions are mutually holding and requesting locks on the same resources, creating a cycle of dependencies. Deadlocks occur when transactions try to lock resources in a different order. They can happen whenever multiple transactions lock the same resources.
+
+For example :
+
+
+```sql
+#Transaction #1
+START TRANSACTION;
+UPDATE StockPrice SET close = 45.50 WHERE stock_id = 4 and date = '2002-05-01';
+UPDATE StockPrice SET close = 19.80 WHERE stock_id = 3 and date = '2002-05-02';
+COMMIT;
+
+#Transaction 2
+
+START TRANSACTION;
+UPDATE StockPrice SET high  = 20.12 WHERE stock_id = 3 and date = '2002-05-02';
+UPDATE StockPrice SET high  = 47.20 WHERE stock_id = 4 and date = '2002-05-01';
+COMMIT;
+```
+
+If you're unlucky, each transaction will execute its first query and update a row of data, locking it in the process. Each transaction will then attempt to update its second row, only to find that it is already locked. The two transactions will wait forever for each other to complete, unless something intervenes to break the deadlock.
