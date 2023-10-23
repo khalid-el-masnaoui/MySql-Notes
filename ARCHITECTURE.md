@@ -251,3 +251,9 @@ The InnoDB process is running and accept threads to execute them .While they  ar
 You can limit the number of concurrent threads by setting the configuration parameter `innodb_thread_concurrency`  Once the number of executing threads reaches this limit, additional threads sleep for a number of microseconds, set by the configuration parameter `innodb_thread_sleep_delay` before being placed into the queue.
 
 ## MySql Concurrency Control
+
+Anytime more than one query needs to change data at the same time, the problem of concurrency control arises
+
+Concurrent accessing of data is comparatively easy when all users are only reading data, as there is no means that they can interfere with one another. However, when multiple users are accessing the database at the same time, and at least one is updating data, there may be the case of interference, which can result in data inconsistencies.
+
+They are many Concurrency Control techniques MySql employs such : Read-Writes locks , Isolation Level (`REPEATABLE READ`), MVCC 
