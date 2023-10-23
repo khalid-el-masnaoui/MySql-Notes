@@ -314,5 +314,8 @@ You start a transaction with the `START TRANSACTION` statement and then either
 ###### ACID
 
 _Atomicity_
-> A transaction must function as a single indivisible unit of work so that the entire transaction is either applied or rolled back. When transactions are atomic, there is no such thing as a partially completed transaction: it's all or nothing.
+> 	A transaction must function as a single indivisible unit of work so that the entire transaction is either applied or rolled back. When transactions are atomic, there is no such thing as a partially completed transaction: it's all or nothing.
 
+
+_Consistency_
+>	The database should always move from one consistent state to the next. Consistency guarantees that changes made within a transaction are consistent with database constraints and maintaining the data integrity. This includes all rules, constraints, and triggers. If the data gets into an illegal state, the whole transaction fails.
