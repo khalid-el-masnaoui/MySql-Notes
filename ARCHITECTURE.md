@@ -304,3 +304,10 @@ SELECT id from t1 where pk = 10 FOR UPDATE
 **Note** : Row-level locking systems can lock entire tables if the WHERE clause of a statement cannot use an index
 
 **Note 2** : If `autocommit` is set to 1 (the default), the LOCK IN SHARE MODE and FOR UPDATE clauses have no effect in InnoDB.
+
+#### Transactions
+
+A transaction is a group of SQL queries that are treated _atomically_, as a single unit of work. If the database engine can apply the entire group of queries to a database, it does so, but if any of them can't be done because of a crash or other reason, none of them is applied. It's all or nothing.
+
+You start a transaction with the `START TRANSACTION` statement and then either make its changes permanent with `COMMIT` or discard the changes with `ROLLBACK`.
+
