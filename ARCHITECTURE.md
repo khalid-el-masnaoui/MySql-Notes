@@ -319,3 +319,7 @@ _Atomicity_
 
 _Consistency_
 >	The database should always move from one consistent state to the next. Consistency guarantees that changes made within a transaction are consistent with database constraints and maintaining the data integrity. This includes all rules, constraints, and triggers. If the data gets into an illegal state, the whole transaction fails.
+
+
+ _Isolation_
+>	Isolation ensures that all transactions run in an isolated environment. That enables running transactions concurrently because transactions don’t interfere with each other.
