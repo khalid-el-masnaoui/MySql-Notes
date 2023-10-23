@@ -520,6 +520,16 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 
 **Note** : the write-double log prevents data corruption(and to recover) from partial dirty pages writes, while redo log is to prevent data corruption(and to recover) from incomplete transactions.
 
+
+
+<p align="center">
+<img src="./images/flush_pages_and_transactions.png"/>
+</p>
+
+ Changes to pages are applied within so-called `mini transactions (mtr)`, which allow to modify multiple pages in atomic way. When a mini transaction commits, it writes its own  log records to the **log buffer**, increasing the global  modification number called LSN (Log Sequence Number). The mtr has the list of dirty pages that need to be added to the buffer pool specific flush list. Each flush list is ordered on the LSN. you can read more about such topic [here](https://dev.mysql.com/blog-archive/mysql-8-0-new-lock-free-scalable-wal-design/)
+
+
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
