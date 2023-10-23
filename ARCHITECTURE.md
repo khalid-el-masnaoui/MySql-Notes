@@ -342,3 +342,10 @@ The SQL standard defines four isolation levels, with specific rules for which c
 **_READ COMMITTED_**
 
 >	The default isolation level for most database systems (but not MySQL!) is `READ COMMITTED`. It satisfies the simple definition of isolation used earlier: a transaction will see only those changes made by transactions that were already committed when it began, and its changes won't be visible to others until it has committed. This level still allows what's known as a _nonrepeatable read_. This means you can run the same statement twice and see different data.
+
+
+**_REPEATABLE READ_**
+
+> 	`REPEATABLE READ` solves the problems that `READ UNCOMMITTED` allows. It guarantees that any rows a transaction reads will "look the same" in subsequent reads within the same transaction, but in theory it still allows another tricky problem: `phantom reads`. Simply put, a phantom read can happen when you select some range of rows, another transaction inserts a new row into the range, and then you select the same range again; you will then see the new "phantom" row. InnoDB and Falcon solve the phantom read problem with `multiversion concurrency control`, which we explain later.
+
+**Note** : `REPEATABLE READ` is MySQL's default transaction isolation level.
