@@ -421,8 +421,80 @@ The result of all this extra record keeping is that most read queries never acq
 **Note** : MVCC works only with the `REPEATABLE READ` and `READ COMMITTED` isolation levels. `READ UNCOMMITTED` isn't MVCC-compatible because queries don't read the row version that's appropriate for their transaction version; they read the newest version, no matter what. `SERIALIZABLE` isn't MVCC-compatible because reads lock every row they return.
 
 
+## Other Concepts and explanations
 
+#### `SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB
 
+```mysql
+#SESSION1:
+
+mysql> begin;
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into tst values(1);
+
+Query OK, 1 row affected (0.00 sec)
+
+#SESSION2:
+
+mysql> begin ;
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from tst;
+
+Empty set (0.01 sec)
+
+#Session2 does not see any rows as transaction was not commited yet.
+
+#SESSION1:
+
+mysql> commit;
+
+Query OK, 0 rows affected (0.01 sec)
+
+#SESSION2:
+
+mysql> select * from tst;
+
+Empty set (0.00 sec)
+
+mysql> select * from tst lock in share mode;
+
++---+
+
+| i |
+
++---+
+
+| 1 |
+
++---+
+
+1 row in set (0.00 sec)
+
+mysql> select * from tst for update;
+
++---+
+
+| i |
+
++---+
+
+| 1 |
+
++---+
+
+1 row in set (0.00 sec)
+
+#Standard SELECT does not see rows while SELECT for UPDATE and LOCK IN SHARE MODE  sees it.
+
+```
+
+What is happening? `SELECT for UPDATE` and `LOCK IN SHARE MODE` modifiers effectively run in `READ-COMMITTED` isolation mode even if current isolation mode is `REPEATABLE-READ`. 
+**This is done because Innodb can only lock the current version of the row**. 
+Think about a similar case and row being deleted. Even if Innodb would be able to set locks on rows which no more exist – would it do any good for you? Not really – for example, you could try to update the row which you just locked with `SELECT FOR UPDATE` but this row is already gone so you would get quite unexpected error updating the row which you thought you locked successfully. Anyway, it is done this way for good all other decisions would be even more troublesome. **This complexity is what you have to pay for multi-versioning**.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
