@@ -217,13 +217,15 @@ When a MySQL Client disconnects from a MySQL Server. The Client sends a  `COM_
 <img src="./images/mysql_disconnection.png"/>
 </p>
 
-####  Thread Concurrency
+####  InnoDB's Thread Concurrency
 
 A thread will happily execute instructions until it needs to wait for something or until it has used its timeshare as decided by the OS scheduler. There are three things a thread might need to wait for:  A _mutex_, a _database lock_, or _IO_ (will read more about that in the _concurrency control_ section).
 
 What happens when a thread is suspended by the OS? First, it is not progressing anymore. Second, it might hold mutexes or locks which prevent other threads from progressing. Third, when it is woken up again, cached items might have been evicted requiring data to be re-read. At some point more threads will just cause queues of waiting threads to grow and the system will be soon be jammed. The solution is to limit the number of user threads by limiting `max_connections`
 
 ###### the thread concurrency process
+
+In situations where it is helpful to minimize context switching between threads, `InnoDB` can use a number of techniques to limit the number of concurrently executing operating system threads (and thus the number of requests that are processed at any one time). When `InnoDB` receives a new request from a user session, if the number of threads concurrently executing is at a pre-defined limit, the new request sleeps for a short time before it tries again. A request that cannot be rescheduled after the sleep is put in a first-in/first-out queue and eventually is processed. Threads waiting for locks are not counted in the number of concurrently executing threads.
 
 The InnoDB process is running and accept threads to execute them .While they  are threads that are in queue to enter the InnoDB process,
 
@@ -238,10 +240,14 @@ The InnoDB process is running and accept threads to execute them .While they  ar
 >Giving innodb_thread_concurrency a value greater than 0 turns on InnoDB’s concurrency control mechanism (`MVCC`). It is InnoDB’s internal mechanism that manages and controls threads being executed simultaneously.
 
 
-**Innodb_thread_sleep_delay** is the time, in microseconds, a thread will wait before it enters the InnoDB for processing and is only recognized when the innodb_thread_concurrency value is greater than 0. Moreover, the thread will wait for this amount of time even if there is a slot available. It acts as a way to control the workload. If there is no slot available, the threads in the queue follow a FIFO waiting system demonstrated in Figure above. The first thread in line is the first thread to enter InnoDB when the next slot is available and after it waits 1000ms.
+ - **Innodb_thread_sleep_delay**: if the number of executing threads matches the value of innodb_thread_concurrency (assuming it’s value is not 0), a new operation/query requesting a thread will be denied access to the InnoDB kernel, and it will then wait a for a number of microseconds equal to the value of this variable before trying one more time to complete its storage engine request. If it’s still unable to do so after that single retry then it’s placed into the queue of operations waiting for a thread, initiating a context switch. By doing one check before going into the queue it reduces the chance of system level context switching.. If there is no slot available, the threads in the queue follow a FIFO waiting system demonstrated in Figure above. 
 
-**Innodb_concurrency_tickets** is the maximum number of tickets given when a thread enters InnoDB for processing. One ticket will allow a query to perform one row operation. If the query runs out of tickets, it is expelled out of InnoDB and goes back into the waiting queue. In Figure above, innodb_thread_tickets is set to default (5000 tickets). Three threads will be expelled from InnoDB, the ones with 5001, 10000, and 20000 tickets. However, they will each process 5000 tickets before they leave a spot available for the next thread in the queue. Since one of the threads only has 100 tickets, that thread along with the next 2 threads in the queue will be completed before them.
+- **innodb_adaptive_max_sleep_delay** : When this value is set to a value other than 0, it enables the adaptive adjustment of innodb_thread_sleep_delay up to the maximum value of this variable.
+
+- **Innodb_concurrency_tickets** is the maximum number of tickets given when a thread enters InnoDB for processing. One ticket will allow a query to perform one row operation. If the query runs out of tickets, it is expelled out of InnoDB and goes back into the waiting queue. In Figure above, innodb_thread_tickets is set to default (5000 tickets). Three threads will be expelled from InnoDB, the ones with 5001, 10000, and 20000 tickets. However, they will each process 5000 tickets before they leave a spot available for the next thread in the queue. Since one of the threads only has 100 tickets, that thread along with the next 2 threads in the queue will be completed before them.
 
 >Now, will the thread with 100 tickets and the next 2 in the queue be completed before the thread with 500 tickets? Maybe! If you add all the tickets together, it is 300 tickets compared to 500 tickets but 2 threads have to wait for the sleep delay. It will be a pretty close call.
+
+You can limit the number of concurrent threads by setting the configuration parameter `innodb_thread_concurrency`  Once the number of executing threads reaches this limit, additional threads sleep for a number of microseconds, set by the configuration parameter `innodb_thread_sleep_delay` before being placed into the queue.
 
 ## MySql Concurrency Control
