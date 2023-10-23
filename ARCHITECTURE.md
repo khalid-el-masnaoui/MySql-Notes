@@ -270,7 +270,7 @@ Systems that deal with concurrent read/write access typically implement a lockin
 Locks consume resources, one way to improve the concurrency of a shared resource is to be more selective about what you lock. Rather than locking the entire resource, lock only the part that contains the data you need to change. Better yet, lock only the exact piece of data you plan to change. Minimizing the amount of data that you lock at any one time lets changes to a given resource occur simultaneously, as long as they don't conflict with each other.
 
 - **Table locks** : Table-level locking systems always lock entire tables. For instance, the server uses a table-level lock for statements such as `ALTER TABLE`. 
->
+
 ```sql
 #lock tables
 LOCK TABLES table_name [AS alias_name] READ/WRITE;
@@ -285,4 +285,22 @@ UNLOCK TABLES;
 	- **Single-row locks** :  A statement can lock only _a single row_ at a time.
 	- **Range locks** :A statement can lock _a range of rows_
 
+```sql
+#lock rows
+# read lock
+SELECT ... FOR SHARE
+SELECT ... LOCK IN SHARE MODE
+# write lock
+SELECT ... FOR UPDATE
+
+## lock is realeased after the transaction is commited(or row is written to)
+
+# example
+SELECT id from t1 where pk = 10 FOR SHARE
+SELECT id from t1 where pk = 10 LOCK IN SHARE MODE
+SELECT id from t1 where pk = 10 FOR UPDATE
+```
+
 **Note** : Row-level locking systems can lock entire tables if the WHERE clause of a statement cannot use an index
+
+**Note 2** : If `autocommit` is set to 1 (the default), the LOCK IN SHARE MODE and FOR UPDATE clauses have no effect in InnoDB.
