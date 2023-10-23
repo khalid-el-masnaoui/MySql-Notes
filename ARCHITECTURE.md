@@ -502,6 +502,14 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 **Unlocking non matched rows** Imagine you’re running `DELETE FROM USERS WHERE NAME LIKE “%Heikki%”;` How many rows do you think will be locked? Actually, all of them, not only ones which are matched by like because locks are taken on Innodb level before MySQL performs like matching, and row is not unlocked if it does not match.
 
 **Smarter deadlock victim scheduling** At this point transaction which made least updates is killed to resolve deadlock. Which means if a transaction takes a lot of locks but does not do many updates it may never have the chance to complete.
+
+#### Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing
+
+>`InnoDB` performs certain tasks in the background, including flushing of dirty pages from the buffer pool. Dirty pages are those that have been modified but are not yet written to the data files on disk.
+ Buffer pool flushing is initiated when the percentage of dirty pages reaches the low water mark value defined by the `innodb_max_dirty_pages_pct_lwm`variable The default low water mark is 10% of buffer pool pages.
+ The dirty pages are flushed to the  double-write buffer and the tablespace storage
+ The purpose of the double-write buffer is to prevent data corruption from partial page writes, while modified pages are copied from the innodb buffer pool to the tablespace. That is, if MySQL Server were to crash while InnoDB is writing a given page to disk, it could overwrite a page on disk partially. Even with the redo log, there would be no way to recover this page.
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
