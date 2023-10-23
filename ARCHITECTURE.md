@@ -311,3 +311,8 @@ A transaction is a group of SQL queries that are treated _atomically_, as a sin
 
 You start a transaction with the `START TRANSACTION` statement and then either make its changes permanent with `COMMIT` or discard the changes with `ROLLBACK`.
 
+###### ACID
+
+_Atomicity_
+> A transaction must function as a single indivisible unit of work so that the entire transaction is either applied or rolled back. When transactions are atomic, there is no such thing as a partially completed transaction: it's all or nothing.
+
