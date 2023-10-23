@@ -323,3 +323,7 @@ _Consistency_
 
  _Isolation_
 >	Isolation ensures that all transactions run in an isolated environment. That enables running transactions concurrently because transactions don’t interfere with each other.
+
+
+_Durability_
+>	Durability guarantees that once the transaction completes and changes are written to the database, they are persisted. This ensures that data within the system will persist even in the case of system failures like crashes or power outages.
