@@ -408,3 +408,7 @@ Let's see how this applies to particular operations when the transaction isolati
 
 >	InnoDB records the current system version number with the new row.
 
+`DELETE`
+
+> 	InnoDB records the current system version number as the row's deletion ID.
+
