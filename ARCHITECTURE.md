@@ -518,7 +518,7 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 >The **redo log** called also **Write Ahead Log** is a disk-based data structure used during crash recovery to correct data written by **incomplete transactions**. During normal operations, the redo log encodes requests to change table data that result from SQL statements or low-level API calls. Modifications that did not finish updating data files before an unexpected shutdown are replayed automatically during initialization and before connections are accepted.
 
 
-**Note** : the write
+**Note** : the write-double log prevents data corruption(and to recover) from partial dirty pages writes, while redo log is to prevent data corruption(and to recover) from incomplete transactions.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
