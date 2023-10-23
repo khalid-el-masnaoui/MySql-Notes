@@ -505,17 +505,21 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 
 #### Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing
 
->`InnoDB` performs certain tasks in the background, including flushing of dirty pages from the buffer pool. Dirty pages are those that have been modified but are not yet written to the data files on disk.
+>`InnoDB` performs certain tasks in the background, including **flushing of dirty pages** from the **buffer pool**. Dirty pages are those that have been modified but are not yet written to the data files on disk.
  Buffer pool flushing is initiated when the percentage of dirty pages reaches the low water mark value defined by the `innodb_max_dirty_pages_pct_lwm`variable The default low water mark is 10% of buffer pool pages.
- The dirty pages are flushed to the  double-write buffer and the tablespace storage
- The purpose of the double-write buffer is to prevent data corruption from partial page writes, while modified pages are copied from the innodb buffer pool to the tablespace. That is, if MySQL Server were to crash while InnoDB is writing a given page to disk, it could overwrite a page on disk partially. Even with the redo log, there would be no way to recover this page.
+ The dirty pages are flushed to the **double-write buffer** and the **tablespace** storage
+ The purpose of the **double-write buffer** is to prevent data corruption from partial page writes, while modified pages are copied from the innodb buffer pool to the tablespace. That is, if MySQL Server were to crash while InnoDB is writing a given page to disk, it could overwrite a page on disk partially. Even with the redo log, there would be no way to recover this page.
 
-> The log buffer is an allocation in RAM. All writes to the redo log are saved in the log buffer first, because it's very fast to save some data in RAM. A transaction could be made of many changes affecting many individual rows, and writing to disk for every one of these rows would be too slow. So changes on their way to the redo log are saved in the log buffer first. Periodically, a group of changes in the log buffer are saved to disk, in the redo log. This happens when:
+> The **log buffer** is an allocation in RAM. All writes to the redo log are saved in the log buffer first, because it's very fast to save some data in RAM. A transaction could be made of many changes affecting many individual rows, and writing to disk for every one of these rows would be too slow. So changes on their way to the redo log are saved in the log buffer first. Periodically, a group of changes in the log buffer are saved to disk, in the redo log. This happens when:
 - You commit a transaction
 - The log buffer is full (the log buffer has a fixed size)
 - Every 1 second regardless of whether the log buffer is full
 
->
+>The **redo log** called also **Write Ahead Log** is a disk-based data structure used during crash recovery to correct data written by **incomplete transactions**. During normal operations, the redo log encodes requests to change table data that result from SQL statements or low-level API calls. Modifications that did not finish updating data files before an unexpected shutdown are replayed automatically during initialization and before connections are accepted.
+
+
+**Note** : the write
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
