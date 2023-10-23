@@ -404,3 +404,7 @@ Let's see how this applies to particular operations when the transaction isolati
 > 	- The row's deletion version must be undefined or greater than the transaction's version. This ensures that the row wasn't deleted before the transaction began.
 > 	-  Rows that pass both tests may be returned as the query's result.
 
+`INSERT`
+
+>	InnoDB records the current system version number with the new row.
+
