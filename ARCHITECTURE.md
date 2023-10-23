@@ -311,6 +311,8 @@ A transaction is a group of SQL queries that are treated _atomically_, as a sin
 
 You start a transaction with the `START TRANSACTION` statement and then either make its changes permanent with `COMMIT` or discard the changes with `ROLLBACK`.
 
+MySQL operates in `AUTOCOMMIT` mode by default. This means that unless you've explicitly begun a transaction, it automatically executes each query in a separate transaction.
+
 ###### ACID
 
 _Atomicity_
