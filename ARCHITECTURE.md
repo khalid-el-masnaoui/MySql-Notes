@@ -412,3 +412,7 @@ Let's see how this applies to particular operations when the transaction isolati
 
 > 	InnoDB records the current system version number as the row's deletion ID.
 
+`UPDATE`
+
+>	InnoDB writes a new copy of the row, using the system version number for the new row's version. It also writes the system version number as the old row's deletion version.
+
