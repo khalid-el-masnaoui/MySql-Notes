@@ -337,3 +337,8 @@ The SQL standard defines four isolation levels, with specific rules for which c
 **_READ UNCOMMITTED_**
 
 >	In the `READ UNCOMMITTED` isolation level, transactions can view the results of uncommitted transactions. At this level, many problems can occur unless you really, really know what you are doing and have a good reason for doing it. This level is rarely used in practice, because its performance isn't much better than the other levels, which have many advantages. Reading uncommitted data is also known as a _dirty read_.
+
+
+**_READ COMMITTED_**
+
+>	The default isolation level for most database systems (but not MySQL!) is `READ COMMITTED`. It satisfies the simple definition of isolation used earlier: a transaction will see only those changes made by transactions that were already committed when it began, and its changes won't be visible to others until it has committed. This level still allows what's known as a _nonrepeatable read_. This means you can run the same statement twice and see different data.
