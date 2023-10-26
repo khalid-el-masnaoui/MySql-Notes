@@ -2,6 +2,10 @@
 
 In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID, connection and thread handling  and other MySql related concepts.
 
+# Table Of Contents
+
+
+
 ## MySQL Architecture
 
 #### Introduction
