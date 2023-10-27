@@ -599,6 +599,7 @@ The parameter `innodb_flush_method` allows tuning the _IO scheduling._ We ha
 -  `FSYNC`: Data and log files are opened with no options, and the `fsync`system call is used when the engine requires flushing the data and log files. This option causes double buffering:
     - _page cache_
     - _InnoDB_ buffer pools.
+- `O_DSYNC` and  `O_SYNC`:  This flag is used to open the log files while the data files are opened with no options. The _fsync_ system call is executed to flush data files only. O_SYNC doesn’t disable double buffering caching at system level and all writes are synchronous.
 
 
 ##### [References]
