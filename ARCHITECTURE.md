@@ -580,6 +580,11 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 > Usually database systems (such as _MySQL_) use this mechanism to avoid the kernel caching mechanism and to implement their own specific caching layer and custom _IO_ scheduling in order to have fine-grained control of the access pattern.
 
+
+###### **_O_SYNC_ flag**
+
+> _O_SYNC_ is a flag passed when a file is opened. In this scenario, the _write_ system call transfers data to _page cache_, but it’s blocked until the data is actually transferred from _page cache_ to physical storage. There is no need to call the _sync_ system call after the _write_ system call.
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
