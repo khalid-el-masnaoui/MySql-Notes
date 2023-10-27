@@ -585,6 +585,11 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 > _O_SYNC_ is a flag passed when a file is opened. In this scenario, the _write_ system call transfers data to _page cache_, but it’s blocked until the data is actually transferred from _page cache_ to physical storage. There is no need to call the _sync_ system call after the _write_ system call.
 
+
+###### **_O_SYNC + O_DIRECT_ flags**
+
+> When a file is opened with both _O_SYNC + O_DIRECT_ flags, any _write_ operation is guaranteed to be durable
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
