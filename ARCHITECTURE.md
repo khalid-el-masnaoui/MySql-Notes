@@ -563,13 +563,13 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 > To support this scenario, the _sync_ system call is used to be sure the data is actually transferred from _page cache_ into storage.
 
-> The `sync` system call allows a process to flush all buffers to disk while the _fsync_ system call allows a process to flush the buffers specific to an open file.
+> The `sync` system call allows a process to flush all buffers to disk while the `fsync` system call allows a process to flush the buffers specific to an open file.
 
-> Both system calls return to the calling process only when the data has reached permanent storage and in the case of a hardware error, then it’s reported. RDBMS use _sync_/_fsync_ in order to commit changes in storage to make it durable.
+> Both system calls return to the calling process only when the data has reached permanent storage and in the case of a hardware error, then it’s reported. RDBMS use `sync/fsync` in order to commit changes in storage to make it durable.
 
-> The _fdatasync_ system call is similar to _fsync_, except that the file metadata may not be updated unless the metadata is needed to access the data. For example, the last modified time won’t be updated, but it will make sure that all the blocks of the file can be found.
+> The `fdatasync` system call is similar to `fsync`, except that the file metadata may not be updated unless the metadata is needed to access the data. For example, the last modified time won’t be updated, but it will make sure that all the blocks of the file can be found.
 
-> The _msync_ system call is used to flush modified data into storage when a file is mapped into memory using the _mmap_ system call. Without use of this call there is no guarantee that changes are written back before _munmap_ is called.
+> The `msync` system call is used to flush modified data into storage when a file is mapped into memory using the _mmap_ system call. Without use of this call there is no guarantee that changes are written back before _munmap_ is called.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
