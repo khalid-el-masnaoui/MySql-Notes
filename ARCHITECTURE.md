@@ -590,6 +590,17 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 > When a file is opened with both _O_SYNC + O_DIRECT_ flags, any _write_ operation is guaranteed to be durable
 
+
+#### **_InnoDB_ flushing mechanism**
+
+The parameter `innodb_flush_method` allows tuning the _IO scheduling._ We have the following options:
+
+- Empty: This is the default value, and is equivalent to using the `FSYNC` option (see below).
+-  `FSYNC`: Data and log files are opened with no options, and the `fsync`system call is used when the engine requires flushing the data and log files. This option causes double buffering:
+    - _page cache_
+    - _InnoDB_ buffer pools.
+
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
