@@ -601,6 +601,8 @@ The parameter `innodb_flush_method` allows tuning the _IO scheduling._ We ha
     - _InnoDB_ buffer pools.
 - `O_DSYNC` and  `O_SYNC`:  This flag is used to open the log files while the data files are opened with no options. The _fsync_ system call is executed to flush data files only. O_SYNC doesn’t disable double buffering caching at system level and all writes are synchronous.
  - `O_DIRECT`: Data files are opened with the _O_DIRECT_ flag. Log files are opened with no options. It usesthe  _fsync_ system call to flush the log files to storage, ensuring no double buffering on the data files, because all read and write operations go directly to disk.
+- `O_DIRECT_NO_FSYNC`: _InnoDB_ uses O__DIRECT_ during flushing I/O, but skips the _fsync_ system call afterwards. This can provide some performance benefits if you are using a file system that does not require the _fsync_ to store metadata (using `fdatasync` system call).
+
 
 
 
