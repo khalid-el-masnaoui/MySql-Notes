@@ -571,6 +571,15 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 > The `msync` system call is used to flush modified data into storage when a file is mapped into memory using the _mmap_ system call. Without use of this call there is no guarantee that changes are written back before _munmap_ is called.
 
+
+###### **_O_DIRECT_ flag**
+
+> `O_DIRECT` is a flag passed when a file is opened. It instructs to bypass _page cache_ and perform any _IO_ operations directly against storage.
+
+> So, the buffers in the application space are flushed directly to disk, without copying the data into _page cache_ first and waiting for the kernel to schedule _write-back_ operations. Also, the disk controller copies the data directly into _user space_, bypassing the kernel as well.
+
+> Usually database systems (such as _MySQL_) use this mechanism to avoid the kernel caching mechanism and to implement their own specific caching layer and custom _IO_ scheduling in order to have fine-grained control of the access pattern.
+
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
 - [https://dev.mysql.com/](https://dev.mysql.com/)
