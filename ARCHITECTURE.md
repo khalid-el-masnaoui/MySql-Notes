@@ -538,7 +538,11 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 
 #### **IO Access Mechanisms in Linux**
 
+###### **_Read/Write_ system calls**
 
+> When an application (_MySQL_, or other specific application running in the _user space_) executes a _read_ system call, _page cache_ (_write-back cache_ implemented in the  _OS_ kernel inside the system space) is looked at first. If the data is in _page cache_, then it’s copied out into the buffers (memory area) in the application address space. Otherwise, it’s loaded from persistent storage (_disk_) into _page cache_ for further accesses, as well as copied out into the application space.
+
+> When an application executes a _write_ system call, the data moves from the buffers in the application address space into _page cache._ and the underlying _page_ (every piece of data lives inside a logical box called a _page_) gets marked as a _dirty page_. In order to synchronize _dirty pages_ with the storage, a background process called _write-back_ flushes them to the storage and evicts them from the _page cache_ some time afterward.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
