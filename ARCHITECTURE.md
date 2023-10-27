@@ -534,7 +534,7 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 
 ## Data Flushing Mechanisms in InnoDB
 
-Durability is the **_D_** in the _ACI**D**_ properties of transactions in the context of _RDBMS_. Durability is the guarantee that data has been physically recorded to permanent storage (such as a hard disk), preventing any loss of data in the case of a sudden power outage or a hardware failure. In this sense, _RDBMS _are heavy _IO_-bound applications, so it’s necessary to apply some techniques to improve performance while making the data durable.
+Durability is the **_D_** in the _ACI**D**_ properties of transactions in the context of _RDBMS_. Durability is the guarantee that data has been physically recorded to permanent storage (such as a hard disk), preventing any loss of data in the case of a sudden power outage or a hardware failure. In this sense, _RDBMS _ are heavy _IO_-bound applications, so it’s necessary to apply some techniques to improve performance while making the data durable.
 
 #### **IO Access Mechanisms in Linux**
 
@@ -543,6 +543,14 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 > When an application (_MySQL_, or other specific application running in the _user space_) executes a _read_ system call, _page cache_ (_write-back cache_ implemented in the  _OS_ kernel inside the system space) is looked at first. If the data is in _page cache_, then it’s copied out into the buffers (memory area) in the application address space. Otherwise, it’s loaded from persistent storage (_disk_) into _page cache_ for further accesses, as well as copied out into the application space.
 
 > When an application executes a _write_ system call, the data moves from the buffers in the application address space into _page cache._ and the underlying _page_ (every piece of data lives inside a logical box called a _page_) gets marked as a _dirty page_. In order to synchronize _dirty pages_ with the storage, a background process called _write-back_ flushes them to the storage and evicts them from the _page cache_ some time afterward.
+
+###### **_Mmap_ system call**
+
+> Using this mechanism, the data file is mapped into the process address space (_MySQL_ process) using the _mmap_ system call. _Read_/_write_ operations are performed by directly accessing the address space. In this way, an extra step is eliminated while accessing the data. So, there is no need for intermediate buffers in the user space because every buffer cache is in the system space implemented as  _page cache_ by the kernel.
+
+> If the data is in _page cache_, the kernel is bypassed and read operations are performed at memory speed. If the data is not in  _page cache_, a page-fault is issued and the kernel looks for the data for that page and loads the data in _page cache_ to be accessible to the application.
+ 
+ > It’s very common for database engines to use this mechanism to access data files.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
