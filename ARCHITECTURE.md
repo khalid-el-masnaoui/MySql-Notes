@@ -532,6 +532,15 @@ Think about a similar case and row being deleted. Even if Innodb would be able t
 
  Changes to pages are applied within so-called `mini transactions (mtr)`, which allow to modify multiple pages in atomic way. When a mini transaction commits, it writes its own  log records to the **log buffer**, increasing the global  modification number called LSN (Log Sequence Number). The mtr has the list of dirty pages that need to be added to the buffer pool specific flush list. Each flush list is ordered on the LSN. you can read more about such topic [here](https://dev.mysql.com/blog-archive/mysql-8-0-new-lock-free-scalable-wal-design/)
 
+#### Read-Ahead
+
+If `InnoDB` can determine there is a high probability that data might be needed soon, it performs read-ahead operations to bring that data into the buffer pool so that it is available in memory. Making a few large read requests for contiguous data can be more efficient than making several small, spread-out requests. There are two read-ahead heuristics in `InnoDB`:
+
+- In sequential read-ahead, if `InnoDB` notices that the access pattern to a segment in the tablespace is sequential, it posts in advance a batch of reads of database pages to the I/O system.
+    
+- In random read-ahead, if `InnoDB` notices that some area in a tablespace seems to be in the process of being fully read into the buffer pool, it posts the remaining reads to the I/O system.
+
+
 ## Data Flushing Mechanisms in InnoDB
 
 Durability is the **_D_** in the _ACI**D**_ properties of transactions in the context of _RDBMS_. Durability is the guarantee that data has been physically recorded to permanent storage (such as a hard disk), preventing any loss of data in the case of a sudden power outage or a hardware failure. In this sense, _RDBMS _ are heavy _IO_-bound applications, so it’s necessary to apply some techniques to improve performance while making the data durable.
