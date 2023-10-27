@@ -551,6 +551,10 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 > If the data is in _page cache_, the kernel is bypassed and read operations are performed at memory speed. If the data is not in  _page cache_, a page-fault is issued and the kernel looks for the data for that page and loads the data in _page cache_ to be accessible to the application.
  
  > It’s very common for database engines to use this mechanism to access data files.
+ 
+#### **Asynchronous IO**
+
+> Asynchronous _IO (AIO)_ is a mechanism that prevents the calling thread from blocking. The application schedules the asynchronous operations using the _io_submit_ system call, but it’s not blocked. So, the _IO_ operation and the application logic can run in parallel. A separate _io_getevents_ system call is used to wait for and get the data as part of a completed _IO_ operation.
 
 ##### [References]
 - [High Performance MySQL: Optimization, Backups, and Replication Book](https://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/1449314287)
