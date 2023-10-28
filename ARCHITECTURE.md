@@ -14,17 +14,17 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 		- **[The query optimizer](#the-query-optimizer)**
 	- **[The execution plan](#the-execution-plan)**
 	- **[The Query Execution Engine](#the-query-execution-engine)**
-- **[InnoDB Storage Engine Architecture](#)**
-	- **[InnoDB In-Memory Structures](#)**
-		- **[Buffer Pool](#)**
-		- **[Change Buffer](#)**
-		- **[Adaptive Hash Index](#)**
-		- **[Log Buffer](#)**
-	- **[InnoDB On-Disk Structures](#)**
-		- **[Tablespace](#)**
-		- **[Doublewrite Buffer](#)**
-		- **[Redo Log](#)**
-		- **[Undo Logs](#)**
+- **[InnoDB Storage Engine Architecture](#innodb-storage-engine-architecture)**
+	- **[InnoDB In-Memory Structures](#innodb-in-memory-structures)**
+		- **[Buffer Pool](#buffer-pool)**
+		- **[Change Buffer](#change-buffer)**
+		- **[Adaptive Hash Index](#adaptive-hash-index)**
+		- **[Log Buffer](#log-buffer)**
+	- **[InnoDB On-Disk Structures](#innodb-on-disk-structures)**
+		- **[Tablespace](#tablespace)**
+		- **[Doublewrite Buffer](#doublewrite-buffer)**
+		- **[Redo Log](#redo-log)**
+		- **[Undo Logs](#undo-log)**
 - **[MySQL Connection/Threads Handling](#)**
 	- **[Connection](#)**
 	- **[Disconnection](#)**
