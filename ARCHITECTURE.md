@@ -30,6 +30,13 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 	- **[Disconnection](#disconnection)**
 	- **[InnoDB's Thread Concurrency](#innodbs-thread-concurrency)**
 		- **[the thread concurrency process](#the-thread-concurrency-process)**
+- **[MySql Concurrency Control](#MySql Concurrency Control)**
+	-  **[ Read/Write Locks](#Read/Write Locks)**
+	-  **[Transactions](#Transactions)**
+		-  **[ACID](#ACID)**
+		-  **[Isolation Levels](#Isolation Levels)**
+		-  **[Deadlocks](#Deadlocks)**
+	-  **[Multiversion Concurrency Control (MVCC)](#Multiversion Concurrency Control (MVCC))**
 -  **[Other Concepts and explanations](#other-concepts-and-explanations)**
 	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#select-lock-in-share-mode-and-select-for-update-behavior-in-innodb)**
 	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#double-write-buffer--buffer-log--write-ahead-log-redo-log-and-flushing)**
