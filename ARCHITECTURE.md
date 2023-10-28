@@ -3,17 +3,17 @@
 In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID, connection and thread handling  and other MySql related concepts.
 
 # Table Of Contents
-- **[MySQL Architecture](#)**
-	- **[Introduction](#)**
-	- **[Client](#)**
-	- **[Server](#)**
-	- **[Storage](#)**
-	- **[The MySQL Client/Server Protocol](#)**
-	- **[The Query Optimization Process](#)**
-		- **[The parser and the preprocessor](#)**
-		- **[The query optimizer](#)**
-	- **[The execution plan](#)**
-	- **[The Query Execution Engine](#)**
+- **[MySQL Architecture](#mysql-architecture-1)**
+	- **[Introduction](#introduction)**
+	- **[Client](#client)**
+	- **[Server](#server)**
+	- **[Storage](#storage)**
+	- **[The MySQL Client/Server Protocol](#the-mysql-clientserver-protocol)**
+	- **[The Query Optimization Process](#the-query-optimization-process)**
+		- **[The parser and the preprocessor](#the-parser-and-the-preprocessor)**
+		- **[The query optimizer](#the-query-optimizer)**
+	- **[The execution plan](#the-execution-plan)**
+	- **[The Query Execution Engine](#the-query-execution-engine)**
 - **[InnoDB Storage Engine Architecture](#)**
 	- **[InnoDB In-Memory Structures](#)**
 		- **[Buffer Pool](#)**
