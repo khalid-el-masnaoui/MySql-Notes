@@ -23,8 +23,8 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 	- **[InnoDB On-Disk Structures](#innodb-on-disk-structures)**
 		- **[Tablespace](#tablespace)**
 		- **[Doublewrite Buffer](#doublewrite-buffer)**
-		- **[Redo Log](#redo-log)**
-		- **[Undo Logs](#undo-log)**
+		- **[Redo Logs](#redo-logs)**
+		- **[Undo Logs](#undo-logs)**
 - **[MySQL Connection/Threads Handling](#mysql-connectionthreads-handling)**
 	- **[Connection](#connection)**
 	- **[Disconnection](#disconnection)**
@@ -44,7 +44,7 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 -  **[Data Flushing Mechanisms in InnoDB](#data-flushing-mechanisms-in-innodb)**
 	-  **[IO Access Mechanisms in Linux](#io-access-mechanisms-in-linux)**
 		-  **[Read/Write system calls](#readwritesystem-calls)**
-		-  **[Mmap system call](#mmap-system-calls)**
+		-  **[Mmap system call](#mmap-system-call)**
 		-  **[Asynchronous IO](#asynchronous-io)**
 		-  **[Sync/fsync/fdatasync/msync system calls](#syncfsyncfdatasyncmsyncsystem-calls)**
 		-  **[O_DIRECT_ flag](#o_direct_flag)**
@@ -220,7 +220,7 @@ Although data is written twice, the doublewrite buffer does not require twice as
 
 Prior to MySQL 8.0.20, the doublewrite buffer storage area is located in the `InnoDB` system tablespace. As of MySQL 8.0.20, the doublewrite buffer storage area is located in doublewrite files.
 
-###### Redo Log
+###### Redo Logs
 
 The redo log is a disk-based data structure used during crash recovery to correct data written by incomplete transactions. During normal operations, the redo log encodes requests to change table data that result from SQL statements or low-level API calls. Modifications that did not finish updating data files before an unexpected shutdown are replayed automatically during initialization and before connections are accepted.
 
