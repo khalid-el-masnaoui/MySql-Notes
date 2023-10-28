@@ -25,11 +25,11 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 		- **[Doublewrite Buffer](#doublewrite-buffer)**
 		- **[Redo Log](#redo-log)**
 		- **[Undo Logs](#undo-log)**
-- **[MySQL Connection/Threads Handling](#)**
-	- **[Connection](#)**
-	- **[Disconnection](#)**
-	- **[InnoDB's Thread Concurrency](#)**
-		- **[the thread concurrency process](#)**
+- **[MySQL Connection/Threads Handling](#mysql-connectionthreads-handling)**
+	- **[Connection](#connection)**
+	- **[Disconnection](#disconnection)**
+	- **[InnoDB's Thread Concurrency](#innodbs-thread-concurrency)**
+		- **[the thread concurrency process](#the-thread-concurrency-process)**
 -  **[Other Concepts and explanations](#)**
 	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#)**
 	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#)**
