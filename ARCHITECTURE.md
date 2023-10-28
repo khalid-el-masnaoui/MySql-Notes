@@ -3,7 +3,47 @@
 In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID, connection and thread handling  and other MySql related concepts.
 
 # Table Of Contents
-
+- **[MySQL Architecture](#)**
+	- **[Introduction](#)**
+	- **[Client](#)**
+	- **[Server](#)**
+	- **[Storage](#)**
+	- **[The MySQL Client/Server Protocol](#)**
+	- **[The Query Optimization Process](#)**
+		- **[The parser and the preprocessor](#)**
+		- **[The query optimizer](#)**
+	- **[The execution plan](#)**
+	- **[The Query Execution Engine](#)**
+- **[InnoDB Storage Engine Architecture](#)**
+	- **[InnoDB In-Memory Structures](#)**
+		- **[Buffer Pool](#)**
+		- **[Change Buffer](#)**
+		- **[Adaptive Hash Index](#)**
+		- **[Log Buffer](#)**
+	- **[InnoDB On-Disk Structures](#)**
+		- **[Tablespace](#)**
+		- **[Doublewrite Buffer](#)**
+		- **[Redo Log](#)**
+		- **[Undo Logs](#)**
+- **[MySQL Connection/Threads Handling](#)**
+	- **[Connection](#)**
+	- **[Disconnection](#)**
+	- **[InnoDB's Thread Concurrency](#)**
+		- **[the thread concurrency process](#)**
+-  **[Other Concepts and explanations](#)**
+	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#)**
+	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#)**
+	-  **[Read-Ahead](#)**
+-  **[Data Flushing Mechanisms in InnoDB](#)**
+	-  **[IO Access Mechanisms in Linux](#)**
+		-  **[Read/Write system calls](#)**
+		-  **[Mmap system call](#)**
+		-  **[Asynchronous IO](#)**
+		-  **[Sync/fsync/fdatasync/msync system calls](#)**
+		-  **[O_DIRECT_ flag](#)**
+		-  **[O_SYNC_ flag](#)**
+		-  **[O_SYNC + O_DIRECT_ flags](#)**
+	-  **[InnoDB_ flushing mechanism](#)** 
 
 
 ## MySQL Architecture
@@ -545,15 +585,15 @@ If `InnoDB` can determine there is a high probability that data might be neede
 
 Durability is the **_D_** in the _ACI**D**_ properties of transactions in the context of _RDBMS_. Durability is the guarantee that data has been physically recorded to permanent storage (such as a hard disk), preventing any loss of data in the case of a sudden power outage or a hardware failure. In this sense, _RDBMS _ are heavy _IO_-bound applications, so it’s necessary to apply some techniques to improve performance while making the data durable.
 
-#### **IO Access Mechanisms in Linux**
+#### IO Access Mechanisms in Linux
 
-###### **_Read/Write_ system calls**
+###### Read/Write system calls
 
 > When an application (_MySQL_, or other specific application running in the _user space_) executes a _read_ system call, _page cache_ (_write-back cache_ implemented in the  _OS_ kernel inside the system space) is looked at first. If the data is in _page cache_, then it’s copied out into the buffers (memory area) in the application address space. Otherwise, it’s loaded from persistent storage (_disk_) into _page cache_ for further accesses, as well as copied out into the application space.
 
 > When an application executes a _write_ system call, the data moves from the buffers in the application address space into _page cache._ and the underlying _page_ (every piece of data lives inside a logical box called a _page_) gets marked as a _dirty page_. In order to synchronize _dirty pages_ with the storage, a background process called _write-back_ flushes them to the storage and evicts them from the _page cache_ some time afterward.
 
-###### **_Mmap_ system call**
+###### Mmap system call
 
 > Using this mechanism, the data file is mapped into the process address space (_MySQL_ process) using the _mmap_ system call. _Read_/_write_ operations are performed by directly accessing the address space. In this way, an extra step is eliminated while accessing the data. So, there is no need for intermediate buffers in the user space because every buffer cache is in the system space implemented as  _page cache_ by the kernel.
 
@@ -561,12 +601,12 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
  
  > It’s very common for database engines to use this mechanism to access data files.
  
-###### **Asynchronous IO**
+###### Asynchronous IO
 
 > Asynchronous _IO (AIO)_ is a mechanism that prevents the calling thread from blocking. The application schedules the asynchronous operations using the _io_submit_ system call, but it’s not blocked. So, the _IO_ operation and the application logic can run in parallel. A separate _io_getevents_ system call is used to wait for and get the data as part of a completed _IO_ operation.
 
 
-###### **_Sync/fsync/fdatasync/msync_ system calls**
+###### Sync/fsync/fdatasync/msync system calls
 
 > By default, the _write_ system call returns after all data has been copied from the user space into _page cache_ in the system space. There is no guarantee that data has actually reached storage.
 
@@ -581,7 +621,7 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 > The `msync` system call is used to flush modified data into storage when a file is mapped into memory using the _mmap_ system call. Without use of this call there is no guarantee that changes are written back before _munmap_ is called.
 
 
-###### **_O_DIRECT_ flag**
+###### O_DIRECT_ flag
 
 > `O_DIRECT` is a flag passed when a file is opened. It instructs to bypass _page cache_ and perform any _IO_ operations directly against storage.
 
@@ -590,17 +630,17 @@ Durability is the **_D_** in the _ACI**D**_ properties of transactions in th
 > Usually database systems (such as _MySQL_) use this mechanism to avoid the kernel caching mechanism and to implement their own specific caching layer and custom _IO_ scheduling in order to have fine-grained control of the access pattern.
 
 
-###### **_O_SYNC_ flag**
+###### O_SYNC_ flag
 
 > _O_SYNC_ is a flag passed when a file is opened. In this scenario, the _write_ system call transfers data to _page cache_, but it’s blocked until the data is actually transferred from _page cache_ to physical storage. There is no need to call the _sync_ system call after the _write_ system call.
 
 
-###### **_O_SYNC + O_DIRECT_ flags**
+###### O_SYNC + O_DIRECT_ flags
 
 > When a file is opened with both _O_SYNC + O_DIRECT_ flags, any _write_ operation is guaranteed to be durable
 
 
-#### **_InnoDB_ flushing mechanism**
+#### InnoDB_ flushing mechanism
 
 The parameter `innodb_flush_method` allows tuning the _IO scheduling._ We have the following options:
 
