@@ -44,7 +44,7 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 -  **[Data Flushing Mechanisms in InnoDB](#data-flushing-mechanisms-in-innodb)**
 	-  **[IO Access Mechanisms in Linux](#io-access-mechanisms-in-linux)**
 		-  **[Read/Write system calls](#readwritesystem-calls)**
-		-  **[Mmap system call](#mmap-system-call)**
+		-  **[Mmap system call](#mmapsystem-call)**
 		-  **[Asynchronous IO](#asynchronous-io)**
 		-  **[Sync/fsync/fdatasync/msync system calls](#syncfsyncfdatasyncmsyncsystem-calls)**
 		-  **[O_DIRECT_ flag](#o_direct_flag)**
