@@ -34,16 +34,16 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#select-lock-in-share-mode-and-select-for-update-behavior-in-innodb)**
 	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#double-write-buffer--buffer-log--write-ahead-log-redo-log-and-flushing)**
 	-  **[Read-Ahead](#read-ahead)**
--  **[Data Flushing Mechanisms in InnoDB](#)**
-	-  **[IO Access Mechanisms in Linux](#)**
-		-  **[Read/Write system calls](#)**
-		-  **[Mmap system call](#)**
-		-  **[Asynchronous IO](#)**
-		-  **[Sync/fsync/fdatasync/msync system calls](#)**
-		-  **[O_DIRECT_ flag](#)**
-		-  **[O_SYNC_ flag](#)**
-		-  **[O_SYNC + O_DIRECT_ flags](#)**
-	-  **[InnoDB_ flushing mechanism](#)** 
+-  **[Data Flushing Mechanisms in InnoDB](#data-flushing-mechanisms-in-innodb)**
+	-  **[IO Access Mechanisms in Linux](#io-access-mechanisms-in-linux)**
+		-  **[Read/Write system calls](#readwritesystem-calls)**
+		-  **[Mmap system call](#mmap-system-calls)**
+		-  **[Asynchronous IO](#asynchronous-io)**
+		-  **[Sync/fsync/fdatasync/msync system calls](#syncfsyncfdatasyncmsyncsystem-calls)**
+		-  **[O_DIRECT_ flag](#o_direct_flag)**
+		-  **[O_SYNC_ flag](#o_sync_flag)**
+		-  **[O_SYNC + O_DIRECT_ flags](#o_sync--o_direct_flags)**
+	-  **[InnoDB_ flushing mechanism](#innodb_flushing-mechanism)** 
 
 
 ## MySQL Architecture
