@@ -30,10 +30,10 @@ In-depth Notes about MySql , MySql/InnoDB architecture, concurrency control ACID
 	- **[Disconnection](#disconnection)**
 	- **[InnoDB's Thread Concurrency](#innodbs-thread-concurrency)**
 		- **[the thread concurrency process](#the-thread-concurrency-process)**
--  **[Other Concepts and explanations](#)**
-	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#)**
-	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#)**
-	-  **[Read-Ahead](#)**
+-  **[Other Concepts and explanations](#other-concepts-and-explanations)**
+	-  **[`SELECT LOCK IN SHARE MODE` and `SELECT FOR UPDATE` Behavior In InnoDB](#select-lock-in-share-mode-and-select-for-update-behavior-in-innodb)**
+	-  **[Double-Write buffer , Buffer Log , Write Ahead Log (Redo log) and Flushing](#double-write-buffer--buffer-log--write-ahead-log-redo-log-and-flushing)**
+	-  **[Read-Ahead](#read-ahead)**
 -  **[Data Flushing Mechanisms in InnoDB](#)**
 	-  **[IO Access Mechanisms in Linux](#)**
 		-  **[Read/Write system calls](#)**
